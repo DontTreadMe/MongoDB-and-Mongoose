@@ -13,7 +13,7 @@
 // as `MONGO_URI`. Connect to the database using `mongoose.connect(<Your URI>)`
 var mongoose = require('mongoose');
 process.env.MONGO_URI='mongodb://admin1:fjf7Boa3@ds145562.mlab.com:45562/mngdb';
-mongoose.connect(process.env.MONGO_URI);
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true });
 /** # SCHEMAS and MODELS #
 /*  ====================== */
 // var db = mongoose.connection;
@@ -90,9 +90,13 @@ var Person = mongoose.model('Person', personSchema);
 // });
 
 var createAndSavePerson = function(done) {
-  
-  done(null /*, data*/);
-
+  var murrey = new Person({name: 'Murrey', age: 54, favoriteFoods: ['pizza', 'burger', 'pasta']});
+  murrey.save((err, data) => {
+    if (err) {
+      done(err);
+    }
+    done(null, data);
+  });
 };
 
 /** 4) Create many People with `Model.create()` */
@@ -105,9 +109,12 @@ var createAndSavePerson = function(done) {
 // 'arrayOfPeople'.
 
 var createManyPeople = function(arrayOfPeople, done) {
-    
-    done(null/*, data*/);
-    
+  Person.create(arrayOfPeople, (err, data) => {
+    if (err) {
+      done(err);
+    }      
+    done(null, data);
+  });    
 };
 
 /** # C[R]UD part II - READ #
