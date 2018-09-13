@@ -16,7 +16,19 @@ process.env.MONGO_URI='mongodb://admin1:fjf7Boa3@ds145562.mlab.com:45562/mngdb';
 mongoose.connect(process.env.MONGO_URI);
 /** # SCHEMAS and MODELS #
 /*  ====================== */
-
+// var db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'connection error:'));
+// db.once('open', function() {
+//   // we're connected!
+//   console.log("we're connected!");
+  
+  var personSchema = new mongoose.Schema({
+    name: { type: String, required: true },
+    age: Number,
+    favoriteFoods: [String]
+  });
+  
+// });
 /** 2) Create a 'Person' Model */
 
 // First of all we need a **Schema**. Each schema maps to a MongoDB collection
@@ -39,7 +51,8 @@ mongoose.connect(process.env.MONGO_URI);
 
 // <Your code here >
 
-var Person /* = <Your Model> */
+var Person = mongoose.model('Person', personSchema);
+/* = <Your Model> */
 
 // **Note**: GoMix is a real server, and in real servers interactions with
 // the db are placed in handler functions, to be called when some event happens
