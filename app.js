@@ -93,9 +93,9 @@ var createAndSavePerson = function(done) {
   var murrey = new Person({name: 'Murrey', age: 54, favoriteFoods: ['pizza', 'burger', 'pasta']});
   murrey.save((err, data) => {
     if (err) {
-      done(err);
-    }
-    done(null, data);
+    done(err);
+  }
+  done(null, data);
   });
 };
 
@@ -111,9 +111,9 @@ var createAndSavePerson = function(done) {
 var createManyPeople = function(arrayOfPeople, done) {
   Person.create(arrayOfPeople, (err, data) => {
     if (err) {
-      done(err);
-    }      
-    done(null, data);
+    done(err);
+  }      
+  done(null, data);
   });    
 };
 
@@ -131,9 +131,9 @@ var createManyPeople = function(arrayOfPeople, done) {
 var findPeopleByName = function(personName, done) {
   Person.find({name: personName}, (err, data) => {
     if (err) {
-      done(err);
-    }      
-    done(null, data);
+    done(err);
+  }      
+  done(null, data);
   });    
 };
 
@@ -147,11 +147,13 @@ var findPeopleByName = function(personName, done) {
 // argument `food` as search key
 
 var findOneByFood = function(food, done) {
-
-  done(null/*, data*/);
-  
+  Person.findOne({favoriteFoods: food}, (err, data) => {
+  if (err) {
+    done(err);
+  }      
+  done(null, data);
+  });    
 };
-
 /** 7) Use `Model.findById()` */
 
 // When saving a document, mongodb automatically add the field `_id`,
@@ -162,11 +164,13 @@ var findOneByFood = function(food, done) {
 // Use the function argument 'personId' as search key.
 
 var findPersonById = function(personId, done) {
-  
-  done(null/*, data*/);
-  
+  Person.findById(personId, (err, data) => {
+  if (err) {
+    done(err);
+  }      
+  done(null, data);
+  });    
 };
-
 /** # CR[U]D part III - UPDATE # 
 /*  ============================ */
 
@@ -194,10 +198,16 @@ var findPersonById = function(personId, done) {
 
 var findEditThenSave = function(personId, done) {
   var foodToAdd = 'hamburger';
-  
-  done(null/*, data*/);
+  Person.findById(personId, (err, data) => {
+    if (err) {
+      done(err);
+    } else {
+      data.favoriteFoods.push(foodToAdd);
+      data.save((err, data) => err ? done(err) : done(null, data));
+    }
+  });
+  // done(null/*, data*/);
 };
-
 /** 9) New Update : Use `findOneAndUpdate()` */
 
 // Recent versions of `mongoose` have methods to simplify documents updating.
