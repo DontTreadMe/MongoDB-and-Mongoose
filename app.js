@@ -290,8 +290,12 @@ var removeManyPeople = function(done) {
 
 var queryChain = function(done) {
   var foodToSearch = "burrito";
-  
-  done(null/*, data*/);
+  Person.find({ favoriteFoods: foodToSearch }).sort('name').limit(2).select('-age').exec((err, data) => {
+  if (err) {
+    done(err);
+  }      
+  done(null, data);
+  });    
 };
 
 /** **Well Done !!**
